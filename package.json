@@ -1,0 +1,96 @@
+{
+  "name": "react-threesixty",
+  "version": "1.0.3",
+  "description": "A Simple React 360 Library using threesixty.js",
+  "keywords": [
+    "React 360",
+    "react-360",
+    "360"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/index.modern.js",
+  "umd:main": "dist/index.umd.js",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "rollup -c",
+    "watch": "rollup -c --watch",
+    "dev": "concurrently \" npm run watch \" \" npm run start --prefix examples/react \"  ",
+    "test": "run-s test:unit test:lint test:build",
+    "test:lint": "eslint src/**/*.js",
+    "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
+    "test:watch": "react-scripts test --env=jsdom --coverage --collectCoverageFrom=src/components/**/*.js",
+    "test:build": "run-s build",
+    "lint:fix": "prettier-eslint '**/*.js' --write",
+    "prepublish": "npm run build"
+  },
+  "author": "",
+  "license": "MIT",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx}": [
+      "npm run lint:fix"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.3",
+    "@babel/preset-env": "^7.10.3",
+    "@babel/preset-react": "^7.10.1",
+    "@testing-library/jest-dom": "^5.10.1",
+    "@testing-library/react": "^10.4.1",
+    "@testing-library/user-event": "^12.0.7",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-macros": "^2.8.0",
+    "babel-plugin-styled-components": "^1.10.7",
+    "concurrently": "^5.2.0",
+    "cross-env": "^7.0.2",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-config-standard-react": "^9.2.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.0.5",
+    "prettier-eslint-cli": "^5.0.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "^3.4.1",
+    "react-test-renderer": "^16.13.1",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.18.0",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-peer-deps-external": "^2.2.2",
+    "rollup-plugin-terser": "^6.1.0",
+    "rollup-plugin-uglify": "^6.0.4",
+    "styled-components": "^5.1.1"
+  },
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "prop-types": "^15.7.2",
+    "styled-components": "^5.1.1"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ashivliving/react-threesixty"
+  },
+  "dependencies": {
+    "@mladenilic/threesixty.js": "^1.2.3"
+  }
+}
