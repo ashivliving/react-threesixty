@@ -41,7 +41,8 @@ npm i react-threesixty
 
   // Rotation settings
   speed: 100,     // Rotation speed during 'play' mode. Default: 10
-  inverted: false // Inverts rotation direction
+  inverted: false, // Inverts rotation direction
+  autoPlay: false
 }
 ```
 
