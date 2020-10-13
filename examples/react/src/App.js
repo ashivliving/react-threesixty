@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { ThreeSixtyViewer } from 'react-threesixty';
+import ThreeSixtyViewer from './Component/ThreeSixtyViewer';
 import { Pannellum } from "pannellum-react";
 
 const App = () => {
@@ -11,7 +11,7 @@ const App = () => {
 
     return (
         <React.Fragment>
-            <ThreeSixtyViewer image={imageArr} width='auto' height='600' />
+            <ThreeSixtyViewer image={imageArr} width='auto' height='600' autoPlay={true} speed={100} containerName="three-sixty-viewer" />
             {/* <Pannellum
                 width="100%"
                 height="500px"
