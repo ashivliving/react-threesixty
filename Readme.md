@@ -19,11 +19,12 @@ npm i react-threesixty
 ```js
 {
   // Source image url
-  image: 'images/example.jpg', // Also supports passing an array of images
-
-  // Sprite options (If array of images are provided, these options are ignored)
-  count: 30,                   // Total number of images. Default: 0
-  perRow: 5,                   // Number of images per row. Default: 0
+  image: [
+    'images/example-1.jpeg',
+    'images/example-2.jpeg',
+    'images/example-3.jpeg',
+    ...
+  ], // Also supports passing an array of images
 
   // Width & Height
   width: 300,  // Image width. Default 300
@@ -42,7 +43,8 @@ npm i react-threesixty
   // Rotation settings
   speed: 100,     // Rotation speed during 'play' mode. Default: 10
   inverted: false, // Inverts rotation direction
-  autoPlay: false
+  autoPlay: false, // initial Autoplay 
+  containerName: 'reactThreesixtyContainer' //Three sixty container name
 }
 ```
 
@@ -56,8 +58,7 @@ As an alternative to sprite image, ThreeSixty also supports using array of image
     'images/example-3.jpeg',
     ...
   ]
-  count: 19
-  perRow: 4
+  containerName: 'react-three-sixty' //Three sixty container name
 />
 ```
 In this case options `count` and `perRow` are ignored.
