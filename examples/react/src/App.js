@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import ThreeSixtyViewer from './Component/ThreeSixtyViewer';
+import { ThreeSixtyViewer } from 'react-threesixty';
 import { Pannellum } from "pannellum-react";
 
 const App = () => {
