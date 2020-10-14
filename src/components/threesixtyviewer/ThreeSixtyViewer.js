@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, memo } from 'react'
 import ThreeSixty from '@ashivliving/threesixty-js';
 
 const ThreeSixtyViewer = (props) => {
@@ -51,4 +51,4 @@ const ThreeSixtyViewer = (props) => {
     </>
 }
 
-export default ThreeSixtyViewer
+export default memo(ThreeSixtyViewer)

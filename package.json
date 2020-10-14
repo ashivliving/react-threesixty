@@ -91,6 +91,6 @@
     "url": "https://github.com/ashivliving/react-threesixty"
   },
   "dependencies": {
-    "@ashivliving/threesixty-js": "^2.0.1"
+    "@ashivliving/threesixty-js": "^2.0.2"
   }
 }
