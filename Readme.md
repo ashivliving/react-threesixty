@@ -43,8 +43,9 @@ npm i react-threesixty
   // Rotation settings
   speed: 100,     // Rotation speed during 'play' mode. Default: 10
   inverted: false, // Inverts rotation direction
-  autoPlay: false, // initial Autoplay 
-  containerName: 'reactThreesixtyContainer' //Three sixty container name
+  autoPlay: false, // Initial Autoplay. Default: false
+  containerName: 'reactThreesixtyContainer' // Three sixty container name. Default: 'reactThreesixtyContainer'
+  handleImageChange: null // Callback function to get image change. Default: null. Returns new image index
 }
 ```
 
@@ -61,7 +62,6 @@ As an alternative to sprite image, ThreeSixty also supports using array of image
   containerName: 'react-three-sixty' //Three sixty container name
 />
 ```
-In this case options `count` and `perRow` are ignored.
 
 ### Licence
 

@@ -1,10 +1,9 @@
-import React, { createElement, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, memo } from 'react'
 import ThreeSixty from '@ashivliving/threesixty-js';
 
 const ThreeSixtyViewer = (props) => {
-    const { image, autoPlay } = props;
+    const { image, autoPlay, handleImageChange, containerName = 'reactThreesixtyContainer' } = props;
     const viewerRef = useRef(null);
-    const [showViewer, setShowViewer] = useState(false);
 
     const preloadImages = (urls, allImagesLoadedCallback) => {
         var loadedCounter = 0;
@@ -24,6 +23,19 @@ const ThreeSixtyViewer = (props) => {
         }
     }
 
+    const imageChange = (e) => {
+        if (e && e.detail && e.detail.image_index && handleImageChange) {
+            handleImageChange(e.detail.image_index);
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener(`${containerName}_image_changed`, imageChange);
+        return () => {
+            document.removeEventListener(`${containerName}_image_changed`, imageChange);
+        }
+    }, []);
+
     useEffect(() => {
         if (viewerRef) {
             const threesixty = new ThreeSixty(viewerRef.current, {
@@ -33,7 +45,6 @@ const ThreeSixtyViewer = (props) => {
                 if (autoPlay) {
                     threesixty.play();
                 }
-                setShowViewer(true);
             });
             return () => {
                 if (viewerRef) {
@@ -51,4 +62,4 @@ const ThreeSixtyViewer = (props) => {
     </>
 }
 
-export default ThreeSixtyViewer
+export default memo(ThreeSixtyViewer)

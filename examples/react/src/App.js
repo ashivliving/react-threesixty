@@ -1,29 +1,20 @@
-import React, { useRef } from 'react'
-import { ThreeSixtyViewer } from 'react-threesixty';
-import { Pannellum } from "pannellum-react";
+import React from 'react'
+import ThreeSixtyViewer from './Component/ThreeSixtyViewer';
 
 const App = () => {
     const imageArr = [...Array(35)].map((ite, index) => {
         return `https://spinny-images.s3.ap-south-1.amazonaws.com/temp-assets/nexon-360/${index + 1}.jpg`;
     });
-    const panoramaImage = 'https://spinny-images.s3.ap-south-1.amazonaws.com/temp-assets/nexon-360/interior-temp.jpg'
-    const viewerRef = useRef(null);
+
+    const handleImageChange = (image_index) => {
+        console.log('image change', image_index)
+    }
 
     return (
         <React.Fragment>
-            <ThreeSixtyViewer image={imageArr} width='auto' height='600' autoPlay={true} speed={100} containerName="three-sixty-viewer" />
-            {/* <Pannellum
-                width="100%"
-                height="500px"
-                image={panoramaImage}
-                pitch={10}
-                yaw={180}
-                hfov={110}
-                autoLoad
-                onLoad={() => {
-                    console.log("panorama loaded");
-                }}
-            /> */}
+            <div style={{ width: '100vw', height: '100vh' }}>
+                <ThreeSixtyViewer image={imageArr} width='auto' height='600' autoPlay={false} speed={100} containerName="three-sixty-viewer" handleImageChange={(e) => handleImageChange(e)} />
+            </div>
         </React.Fragment>
     )
 }
