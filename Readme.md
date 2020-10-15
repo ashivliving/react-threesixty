@@ -18,14 +18,17 @@ npm i react-threesixty
 
 ```js
 {
-  // Source image url
-  image: [
-    'images/example-1.jpeg',
-    'images/example-2.jpeg',
-    'images/example-3.jpeg',
+  // Source image url object with 
+  imageArr: [{
+    'image_key' : 'images/example-1.jpeg'
+  }, {
+    'image_key' : 'images/example-2.jpeg'
+  }, {
+    'image_key' : 'images/example-3.jpeg'
+  }
     ...
   ], // Also supports passing an array of images
-
+  imageKey : 'image_key', // imageArr key for imageUrl. Default : image_key
   // Width & Height
   width: 300,  // Image width. Default 300
   height: 300, // Image height. Default 300
@@ -53,12 +56,14 @@ npm i react-threesixty
 As an alternative to sprite image, ThreeSixty also supports using array of images:
 ```js
 <ThreeSixtyViewer 
-  image: [
-    'images/example-1.jpeg',
-    'images/example-2.jpeg',
-    'images/example-3.jpeg',
-    ...
-  ]
+  image: [{
+    'imageUrl' : 'images/example-1.jpeg'
+  }, {
+    'imageUrl' : 'images/example-2.jpeg'
+  }, {
+    'imageUrl' : 'images/example-3.jpeg'
+  }]
+  imageKey : 'imageUrl'
   containerName: 'react-three-sixty' //Three sixty container name
 />
 ```

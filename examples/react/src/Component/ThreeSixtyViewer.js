@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, memo } from 'react'
 import ThreeSixty from '@ashivliving/threesixty-js';
 
 const ThreeSixtyViewer = (props) => {
-    const { image, autoPlay, handleImageChange, containerName = 'reactThreesixtyContainer' } = props;
+    const { imageArr, imageKey = 'image_url', autoPlay, handleImageChange, containerName = 'reactThreesixtyContainer' } = props;
     const viewerRef = useRef(null);
 
     const preloadImages = (urls, allImagesLoadedCallback) => {
@@ -25,7 +25,10 @@ const ThreeSixtyViewer = (props) => {
 
     const imageChange = (e) => {
         if (e && e.detail && e.detail.image_index && handleImageChange) {
-            handleImageChange(e.detail.image_index);
+            handleImageChange({
+                index: e.detail.image_index,
+                item: imageArr[e.detail.image_index]
+            });
         }
     }
 
@@ -39,9 +42,10 @@ const ThreeSixtyViewer = (props) => {
     useEffect(() => {
         if (viewerRef) {
             const threesixty = new ThreeSixty(viewerRef.current, {
+                image: imageArr.map(ite => ite[imageKey]),
                 ...props
             });
-            preloadImages(Array.isArray(image) ? image : [image], () => {
+            preloadImages(imageArr.map(ite => ite[imageKey]), () => {
                 if (autoPlay) {
                     threesixty.play();
                 }
@@ -52,7 +56,7 @@ const ThreeSixtyViewer = (props) => {
                 }
             }
         }
-    }, [image])
+    }, [imageArr])
 
     return <>
         <div ref={viewerRef} style={{
