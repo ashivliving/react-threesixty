@@ -20,15 +20,15 @@ npm i react-threesixty
 {
   // Source image url object with 
   imageArr: [{
-    'image_key' : 'images/example-1.jpeg'
+    'image_url' : 'images/example-1.jpeg'
   }, {
-    'image_key' : 'images/example-2.jpeg'
+    'image_url' : 'images/example-2.jpeg'
   }, {
-    'image_key' : 'images/example-3.jpeg'
+    'image_url' : 'images/example-3.jpeg'
   }
     ...
   ], // Also supports passing an array of images
-  imageKey : 'image_key', // imageArr key for imageUrl. Default : image_key
+  imageKey : 'image_url', // imageArr key for imageUrl. Default : image_url
   // Width & Height
   width: 300,  // Image width. Default 300
   height: 300, // Image height. Default 300
