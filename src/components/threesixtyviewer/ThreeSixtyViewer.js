@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState, memo } from 'react'
+import React, { useEffect, useRef, memo } from 'react'
 import ThreeSixty from '@ashivliving/threesixty-js';
 
 const ThreeSixtyViewer = (props) => {
-    const { imageArr, imageKey = 'image_url', autoPlay, handleImageChange, containerName = 'reactThreesixtyContainer' } = props;
+    const { imageArr, imageKey = 'image_url', autoPlay, updateIndex, handleImageChange, containerName = 'reactThreesixtyContainer' } = props;
     const viewerRef = useRef(null);
+    const threeSixtyRef = useRef(null);
 
     const preloadImages = (urls, allImagesLoadedCallback) => {
         var loadedCounter = 0;
@@ -33,6 +34,12 @@ const ThreeSixtyViewer = (props) => {
     }
 
     useEffect(() => {
+        if (threeSixtyRef.current && updateIndex >= 0 && updateIndex < imageArr.length) {
+            threeSixtyRef.current.goto(updateIndex)
+        }
+    }, [updateIndex])
+
+    useEffect(() => {
         document.addEventListener(`${containerName}_image_changed`, imageChange);
         return () => {
             document.removeEventListener(`${containerName}_image_changed`, imageChange);
@@ -40,23 +47,30 @@ const ThreeSixtyViewer = (props) => {
     }, []);
 
     useEffect(() => {
+        if (threeSixtyRef.current) {
+            let newImages = imageArr.map(ite => ite[imageKey])
+            threeSixtyRef.current._updateImage(newImages);
+        }
+    }, [imageArr])
+
+    useEffect(() => {
         if (viewerRef) {
-            const threesixty = new ThreeSixty(viewerRef.current, {
+            threeSixtyRef.current = new ThreeSixty(viewerRef.current, {
                 image: imageArr.map(ite => ite[imageKey]),
                 ...props
             });
             preloadImages(imageArr.map(ite => ite[imageKey]), () => {
                 if (autoPlay) {
-                    threesixty.play();
+                    threeSixtyRef.current.play();
                 }
             });
             return () => {
                 if (viewerRef) {
-                    threesixty.destroy();
+                    threeSixtyRef.current.destroy();
                 }
             }
         }
-    }, [imageArr])
+    }, [])
 
     return <>
         <div ref={viewerRef} style={{
