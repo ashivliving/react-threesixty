@@ -3,7 +3,7 @@ import ThreeSixty from '@ashivliving/threesixty-js';
 import injectStyle from './utils/injectStyle';
 import Cursor from './assets/cursor.svg';
 import DragCursor from './assets/drag_cursor.svg';
-import Loader from './assets/loader.png';
+import Loader from './assets/loader.svg';
 
 const ThreeSixtyViewer = (props) => {
     const { imageArr, imageKey = 'image_url', autoPlay, startIndex=0, updateIndex, handleImageChange, containerName = 'reactThreesixtyContainer' } = props;
