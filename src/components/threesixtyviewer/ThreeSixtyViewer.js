@@ -2,7 +2,7 @@ import React, { useEffect, useRef, memo, useState } from 'react';
 import ThreeSixty from '@ashivliving/threesixty-js';
 
 const ThreeSixtyViewer = (props) => {
-    const { imageArr, imageKey = 'image_url', autoPlay, startIndex=0, updateIndex, handleImageChange, containerName = 'reactThreesixtyContainer' } = props;
+    const { imageArr, imageKey = 'image_url', type, autoPlay, startIndex=0, updateIndex, handleImageChange, containerName = 'reactThreesixtyContainer' } = props;
     const viewerRef = useRef(null);
     const threeSixtyRef = useRef(null);
     const [dragState, setDragState] = useState(false);
@@ -90,7 +90,7 @@ const ThreeSixtyViewer = (props) => {
                 }
             }
         }
-    }, [])
+    }, [type])
 
     return <>
         <div ref={viewerRef} style={{
