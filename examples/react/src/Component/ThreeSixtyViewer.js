@@ -1,9 +1,5 @@
 import React, { useEffect, useRef, memo, useState } from 'react';
 import ThreeSixty from '@ashivliving/threesixty-js';
-import injectStyle from './utils/injectStyle';
-import Cursor from './assets/cursor.svg';
-import DragCursor from './assets/drag_cursor.svg';
-import Loader from './assets/loader.svg';
 
 const ThreeSixtyViewer = (props) => {
     const { imageArr, imageKey = 'image_url', autoPlay, startIndex=0, updateIndex, handleImageChange, containerName = 'reactThreesixtyContainer' } = props;
@@ -11,38 +7,6 @@ const ThreeSixtyViewer = (props) => {
     const threeSixtyRef = useRef(null);
     const [dragState, setDragState] = useState(false);
     const [allImagesLoaded, setAllImagesLoaded] = useState(false);
-
-    const keyFrameStyle = `
-    @-webkit-keyframes rotating {
-        from {
-          -webkit-transform: rotate(0deg);
-          -o-transform: rotate(0deg);
-          transform: rotate(0deg);
-        }
-        to {
-          -webkit-transform: rotate(360deg);
-          -o-transform: rotate(360deg);
-          transform: rotate(360deg);
-        }
-    }
-    @keyframes rotating {
-        from {
-          -ms-transform: rotate(0deg);
-          -moz-transform: rotate(0deg);
-          -webkit-transform: rotate(0deg);
-          -o-transform: rotate(0deg);
-          transform: rotate(0deg);
-        }
-        to {
-          -ms-transform: rotate(360deg);
-          -moz-transform: rotate(360deg);
-          -webkit-transform: rotate(360deg);
-          -o-transform: rotate(360deg);
-          transform: rotate(360deg);
-        }
-    }`;
-
-    injectStyle(keyFrameStyle);
 
     const preloadImages = (urls, allImagesLoadedCallback) => {
         var loadedCounter = 0;
@@ -131,7 +95,7 @@ const ThreeSixtyViewer = (props) => {
     return <>
         <div ref={viewerRef} style={{
             position: 'relative',
-            cursor: `url(${dragState ? DragCursor : Cursor}), auto`
+            cursor: `url(${dragState ? 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/drag_cursor.svg' : 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/cursor.svg'}), auto`
         }}>
         </div>
         {
@@ -156,7 +120,7 @@ const ThreeSixtyViewer = (props) => {
                         top : 'calc(50% - 50px)',
                         left : 'calc(50% - 50px)'
                     }}>
-                        <img src={Loader} style={{
+                        <img src='https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/loader.gif' style={{
                             width : '100%',
                             height : '100%',
                             animation: 'rotating 2s linear infinite'

@@ -31,7 +31,7 @@ export default [
                 exclude: "node_modules/**"
             }),
             external(),
-            uglify(),
+            uglify()
         ],
     },
     {
