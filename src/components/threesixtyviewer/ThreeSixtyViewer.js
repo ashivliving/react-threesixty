@@ -99,7 +99,9 @@ const ThreeSixtyViewer = (props) => {
 
     return <>
         <div ref={viewerRef} style={{
-            position: 'relative',
+            position: 'absolute',
+            width : '100%',
+            height : '100%',
             cursor: `url(${dragState ? 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/drag_cursor.svg' : 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/cursor.svg'}), auto`
         }}>
         </div>
