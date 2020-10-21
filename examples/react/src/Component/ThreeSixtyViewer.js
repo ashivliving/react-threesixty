@@ -2,10 +2,11 @@ import React, { useEffect, useRef, memo, useState } from 'react';
 import ThreeSixty from '@ashivliving/threesixty-js';
 
 const ThreeSixtyViewer = (props) => {
-    const { imageArr, imageKey = 'image_url', type, autoPlay, startIndex=0, updateIndex, handleImageChange, containerName = 'reactThreesixtyContainer' } = props;
+    const { imageArr, imageKey = 'image_url', type='exterior', autoPlay, startIndex=0, updateIndex, handleImageChange, containerName = 'reactThreesixtyContainer' } = props;
     const viewerRef = useRef(null);
     const threeSixtyRef = useRef(null);
     const [dragState, setDragState] = useState(false);
+    const [loadedType, setLoadedType] = useState([]);
     const [allImagesLoaded, setAllImagesLoaded] = useState(false);
 
     const preloadImages = (urls, allImagesLoadedCallback) => {
@@ -73,7 +74,9 @@ const ThreeSixtyViewer = (props) => {
 
     useEffect(() => {
         if (viewerRef && viewerRef.current) {
-            setAllImagesLoaded(false);
+            if(loadedType.indexOf(type) === -1) {
+                setAllImagesLoaded(false);
+            }
             threeSixtyRef.current = new ThreeSixty(viewerRef.current, {
                 image: imageArr.map(ite => ite[imageKey]),
                 ...props
@@ -82,6 +85,7 @@ const ThreeSixtyViewer = (props) => {
                 if (autoPlay) {
                     threeSixtyRef.current.play();
                 }
+                setLoadedType([...loadedType, type])
                 setAllImagesLoaded(true);
                 threeSixtyRef.current._allowScroll();
             });
