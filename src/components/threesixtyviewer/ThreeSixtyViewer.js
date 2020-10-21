@@ -27,7 +27,7 @@ const ThreeSixtyViewer = (props) => {
     }
 
     const imageChange = (e) => {
-        if (e && e.detail && e.detail.image_index && handleImageChange) {
+        if (e && e.detail && handleImageChange) {
             handleImageChange({
                 index: e.detail.image_index,
                 item: imageArr[e.detail.image_index]
@@ -73,6 +73,7 @@ const ThreeSixtyViewer = (props) => {
 
     useEffect(() => {
         if (viewerRef && viewerRef.current) {
+            setAllImagesLoaded(false);
             threeSixtyRef.current = new ThreeSixty(viewerRef.current, {
                 image: imageArr.map(ite => ite[imageKey]),
                 ...props
