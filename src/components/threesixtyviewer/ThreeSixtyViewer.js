@@ -51,26 +51,28 @@ const ThreeSixtyViewer = (props) => {
     }, [updateIndex])
 
     useEffect(() => {
-        document.addEventListener(`${containerName}_image_changed`, imageChange);
-        if(viewerRef.current) {
-            viewerRef.current.addEventListener('mousedown', handleMouseDown);
-            viewerRef.current.addEventListener('mouseup', handleMouseUp);
-        }
-        return () => {
-            document.removeEventListener(`${containerName}_image_changed`, imageChange);
+        if(loadedType.indexOf(type) === -1) {
+            document.addEventListener(`${containerName}_image_changed`, imageChange);
             if(viewerRef.current) {
-                viewerRef.current.removeEventListener('mousedown', handleMouseDown);
-                viewerRef.current.removeEventListener('mouseup', handleMouseUp);
+                viewerRef.current.addEventListener('mousedown', handleMouseDown);
+                viewerRef.current.addEventListener('mouseup', handleMouseUp);
+            }
+            return () => {
+                document.removeEventListener(`${containerName}_image_changed`, imageChange);
+                if(viewerRef.current) {
+                    viewerRef.current.removeEventListener('mousedown', handleMouseDown);
+                    viewerRef.current.removeEventListener('mouseup', handleMouseUp);
+                }
             }
         }
-    }, []);
+    }, [type]);
 
     useEffect(() => {
         if (threeSixtyRef.current) {
             let newImages = imageArr.map(ite => ite[imageKey])
             threeSixtyRef.current._updateImage(newImages);
         }
-    }, [imageArr])
+    }, [JSON.stringify(imageArr)])
 
     useEffect(() => {
         if (viewerRef && viewerRef.current) {
