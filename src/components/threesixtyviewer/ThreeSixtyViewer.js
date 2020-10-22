@@ -51,18 +51,16 @@ const ThreeSixtyViewer = (props) => {
     }, [updateIndex])
 
     useEffect(() => {
-        if(loadedType.indexOf(type) === -1) {
-            document.addEventListener(`${containerName}_image_changed`, imageChange);
+        document.addEventListener(`${containerName}_image_changed`, imageChange);
+        if(viewerRef.current) {
+            viewerRef.current.addEventListener('mousedown', handleMouseDown);
+            viewerRef.current.addEventListener('mouseup', handleMouseUp);
+        }
+        return () => {
+            document.removeEventListener(`${containerName}_image_changed`, imageChange);
             if(viewerRef.current) {
-                viewerRef.current.addEventListener('mousedown', handleMouseDown);
-                viewerRef.current.addEventListener('mouseup', handleMouseUp);
-            }
-            return () => {
-                document.removeEventListener(`${containerName}_image_changed`, imageChange);
-                if(viewerRef.current) {
-                    viewerRef.current.removeEventListener('mousedown', handleMouseDown);
-                    viewerRef.current.removeEventListener('mouseup', handleMouseUp);
-                }
+                viewerRef.current.removeEventListener('mousedown', handleMouseDown);
+                viewerRef.current.removeEventListener('mouseup', handleMouseUp);
             }
         }
     }, [type]);

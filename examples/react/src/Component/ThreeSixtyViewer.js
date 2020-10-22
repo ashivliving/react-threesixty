@@ -63,14 +63,14 @@ const ThreeSixtyViewer = (props) => {
                 viewerRef.current.removeEventListener('mouseup', handleMouseUp);
             }
         }
-    }, []);
+    }, [type]);
 
     useEffect(() => {
         if (threeSixtyRef.current) {
             let newImages = imageArr.map(ite => ite[imageKey])
             threeSixtyRef.current._updateImage(newImages);
         }
-    }, [imageArr])
+    }, [JSON.stringify(imageArr)])
 
     useEffect(() => {
         if (viewerRef && viewerRef.current) {
@@ -99,7 +99,9 @@ const ThreeSixtyViewer = (props) => {
 
     return <>
         <div ref={viewerRef} style={{
-            position: 'relative',
+            position: 'absolute',
+            width : '100%',
+            height : '100%',
             cursor: `url(${dragState ? 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/drag_cursor.svg' : 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/cursor.svg'}), auto`
         }}>
         </div>
