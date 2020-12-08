@@ -3,7 +3,7 @@ import ThreeSixty from '@ashivliving/threesixty-js';
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 const ThreeSixtyViewer = (props) => {
-    const { isMobile = false ,imageArr, imageKey = 'image_url', zoomImageKey = 'zoom_image_url', type='exterior', autoPlay, startIndex=0, updateIndex, handleImageChange, handleZoomInOut, containerName = 'reactThreesixtyContainer' } = props;
+    const { isMobile = false ,imageArr, imageKey = 'image_url', zoomImageKey = 'zoom_image_url', type='exterior', autoPlay, startIndex=0, updateIndex, handleImageChange, handleZoomInOut, showZoomOption=false, containerName = 'reactThreesixtyContainer' } = props;
     const viewerRef = useRef(null);
     const threeSixtyRef = useRef(null);
     const [dragState, setDragState] = useState(false);
@@ -77,6 +77,30 @@ const ThreeSixtyViewer = (props) => {
         }
     }
 
+    const handleZoomAction = (type, scale) => {
+        if(type === 'zoom-in') {
+            if(!isZoomIn) {
+                updateZoomImage(threeSixtyRef.current.index);
+                if(scale > 1) {
+                    setIsZoomIn(true);
+                    threeSixtyRef.current._stopScroll();
+                }
+            }
+        } else if(type === 'zoom-out') {
+            if(scale < 1.5) {
+                if(isZoomIn) {
+                    setIsZoomIn(false);
+                    threeSixtyRef.current._allowScroll();
+                }
+            }
+        } else {
+            if(isZoomIn) {
+                setIsZoomIn(false);
+                threeSixtyRef.current._allowScroll();
+            }
+        }
+    }
+
     useEffect(() => {
         if (threeSixtyRef.current && updateIndex >= 0 && updateIndex < imageArr.length) {
             threeSixtyRef.current.goto(updateIndex)
@@ -130,26 +154,88 @@ const ThreeSixtyViewer = (props) => {
         }
     }, [type])
 
+    const renderThreesixty = () => {
+        if(isMobile) {
+            return (
+                <TransformWrapper
+                    doubleClick={{disabled : false}}
+                    pan={{disabled: (!isZoomIn) ? true : false}} 
+                    zoomIn={{step:50}} 
+                    wheel={{step : 50}}
+                    defaultScale={1}
+                    defaultPositionX={0}
+                    defaultPositionY={0}
+                    onZoomChange={(e) => handleZoomChange(e)}
+                    >
+                        <TransformComponent>
+                            <div ref={viewerRef} style={{
+                                // position: 'absolute',
+                                width : '100%',
+                                height : '100%',
+                                cursor: `url(${dragState ? 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/drag_cursor.svg' : 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/cursor.svg'}), auto`,
+                                padding: '5em 0em',
+                                transform: 'translateY(5em)'
+                            }}>
+                            </div>
+                        </TransformComponent>
+                </TransformWrapper>
+            )
+        } else {
+            return (
+                <TransformWrapper
+                    pan={{disabled: (!isZoomIn) ? true : false}} 
+                    zoomIn={{step:10}}
+                    zoomOut={{step:10}}
+                    wheel={{step:50}}
+                    defaultScale={1}
+                    defaultPositionX={0}
+                    defaultPositionY={0}
+                    >
+                        {({ zoomIn, zoomOut, resetTransform, scale }) => (
+                            <>
+                                <TransformComponent>
+                                    <div ref={viewerRef} style={{
+                                        // position: 'absolute',
+                                        visibility : allImagesLoaded ? 'visible' : 'hidden',
+                                        width : '100%',
+                                        height : '100%',
+                                        cursor: `url(${dragState ? 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/drag_cursor.svg' : 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/cursor.svg'}), auto`,
+                                    }}>
+                                    </div>
+                                </TransformComponent>
+                                {
+                                    showZoomOption && (
+                                        <div style={{
+                                            position : 'absolute',
+                                            bottom : '1em',
+                                            right : '1em',
+                                            width : '2em',
+                                            zIndex : '2'
+                                        }}>
+                                            <button style={{padding : '0px', width: '1.5em', height : '1.5em', fontSize : '20px', fontWeight: '500', cursor : 'pointer'}} onClick={(event) => {
+                                                zoomIn(event)
+                                                handleZoomAction('zoom-in', scale);
+                                            }}>&#43;</button>
+                                            <button style={{padding : '0px', width: '1.5em', height : '1.5em', fontSize : '20px', fontWeight: '500', cursor : 'pointer'}} onClick={(event) => {
+                                                zoomOut(event)
+                                                handleZoomAction('zoom-out', scale);
+                                            }}>&minus;</button>
+                                            <button style={{padding : '0px', width: '1.5em', height : '1.5em', fontSize : '20px', fontWeight: '500', cursor : 'pointer'}} onClick={(event) => {
+                                                resetTransform(event)
+                                                handleZoomAction('zoom-close', scale)
+                                            }}>&times;</button>
+                                        </div>
+                                    )
+                                }
+                            </>
+                        )}
+                </TransformWrapper>
+            )
+        }
+    }
+
     return <>
-        <TransformWrapper
-            doubleClick={{disabled : !isMobile ? true : false}}
-            pan={{disabled: (!isZoomIn) ? true : false}} 
-            zoomIn={{step:200, animation: false}} 
-            wheel={{step : 50}}
-            name={containerName}
-            onZoomChange={(e) => handleZoomChange(e)}>
-                <TransformComponent>
-                    <div ref={viewerRef} style={{
-                        // position: 'absolute',
-                        width : '100%',
-                        height : '100%',
-                        cursor: `url(${dragState ? 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/drag_cursor.svg' : 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/cursor.svg'}), auto`,
-                        padding: `${isMobile ? '5em 0em' : 'initial' }`,
-                        transform: `${isMobile ? 'translateY(3em)' : 'initial'}`
-                    }}>
-                    </div>
-                </TransformComponent>
-        </TransformWrapper>
+        { renderThreesixty() }
         {
             !allImagesLoaded && (
                 <div style={{
