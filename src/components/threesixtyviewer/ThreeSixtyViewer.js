@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, memo, useState } from 'react';
 import ThreeSixty from '@ashivliving/threesixty-js';
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 const ThreeSixtyViewer = (props) => {
-    const { imageArr, imageKey = 'image_url', type='exterior', autoPlay, startIndex=0, updateIndex, handleImageChange, containerName = 'reactThreesixtyContainer' } = props;
+    const { isMobile = false ,imageArr, imageKey = 'image_url', zoomImageKey = 'zoom_image_url', type='exterior', autoPlay, startIndex=0, updateIndex, handleImageChange, handleZoomInOut, containerName = 'reactThreesixtyContainer' } = props;
     const viewerRef = useRef(null);
     const threeSixtyRef = useRef(null);
     const [dragState, setDragState] = useState(false);
     const [loadedType, setLoadedType] = useState([]);
     const [allImagesLoaded, setAllImagesLoaded] = useState(false);
+    const [isZoomIn, setIsZoomIn] = useState(false);
 
     const preloadImages = (urls, allImagesLoadedCallback) => {
         var loadedCounter = 0;
@@ -42,6 +44,37 @@ const ThreeSixtyViewer = (props) => {
 
     const handleMouseUp = () => {
         setDragState(false);
+    }
+
+    const updateZoomImage = (imageIndex) => {
+        let zoomImageUrl = imageArr[imageIndex][zoomImageKey] ? imageArr[imageIndex][zoomImageKey] : imageArr[imageIndex][imageKey];
+        if(imageArr[imageIndex][zoomImageKey]) {
+            preloadImages([zoomImageUrl], () => {
+                let newImages = imageArr.map((ite, index) => index === imageIndex ? zoomImageUrl : ite[imageKey])
+                threeSixtyRef.current._updateImage(newImages);
+            })
+        }
+    }
+
+    const handleZoomChange = (transformWrapperData) => {
+        if(transformWrapperData.scale <= 1) {
+            if(isZoomIn) {
+                setIsZoomIn(false);
+                if(handleZoomInOut) {
+                    handleZoomInOut(false);
+                }
+                threeSixtyRef.current._allowScroll();
+            }
+        } else {
+            if(!isZoomIn) {
+                setIsZoomIn(true);
+                if(handleZoomInOut) {
+                    handleZoomInOut(true);
+                }
+                threeSixtyRef.current._stopScroll();
+                updateZoomImage(threeSixtyRef.current.index);
+            }
+        }
     }
 
     useEffect(() => {
@@ -98,13 +131,25 @@ const ThreeSixtyViewer = (props) => {
     }, [type])
 
     return <>
-        <div ref={viewerRef} style={{
-            position: 'absolute',
-            width : '100%',
-            height : '100%',
-            cursor: `url(${dragState ? 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/drag_cursor.svg' : 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/cursor.svg'}), auto`
-        }}>
-        </div>
+        <TransformWrapper
+            doubleClick={{disabled : !isMobile ? true : false}}
+            pan={{disabled: (!isZoomIn) ? true : false}} 
+            zoomIn={{step:200, animation: false}} 
+            wheel={{step : 50}}
+            name={containerName}
+            onZoomChange={(e) => handleZoomChange(e)}>
+                <TransformComponent>
+                    <div ref={viewerRef} style={{
+                        // position: 'absolute',
+                        width : '100%',
+                        height : '100%',
+                        cursor: `url(${dragState ? 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/drag_cursor.svg' : 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/cursor.svg'}), auto`,
+                        padding: `${isMobile ? '5em 0em' : 'initial' }`,
+                        transform: `${isMobile ? 'translateY(3em)' : 'initial'}`
+                    }}>
+                    </div>
+                </TransformComponent>
+        </TransformWrapper>
         {
             !allImagesLoaded && (
                 <div style={{

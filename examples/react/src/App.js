@@ -458,9 +458,9 @@ const App = () => {
 
     return (
         <React.Fragment>
-            <div style={{ width: '100vw', height: '100vh' }}>
+            <div style={{ width: '100vw', height: '100vh', display: 'flex', alignItems: 'center' }}>
                 {/* <input type="number" ref={inputRef} onChange={() => handleInputChange(inputRef.current.value)} /> */}
-                <ThreeSixtyViewer imageArr={imageArr} imageKey="uri" width='auto' height='600' autoPlay={false} speed={100} containerName="three-sixty-viewer" startIndex={0} updateIndex={updateIndex} handleImageChange={(e) => handleImageChange(e)} />
+                <ThreeSixtyViewer imageArr={imageArr} imageKey="uri" zoomImageKey="uri" width='auto' height='600' autoPlay={false} speed={100} containerName="three-sixty-viewer" startIndex={0} updateIndex={updateIndex} />
             </div>
         </React.Fragment>
     )

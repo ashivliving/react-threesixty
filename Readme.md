@@ -1,5 +1,7 @@
 ### Install
+
 ThreeSixty is available as NPM package
+
 ```
 npm i react-threesixty
 ```
@@ -8,17 +10,18 @@ npm i react-threesixty
 
 ```js
 
-<ThreeSixtyViewer 
+<ThreeSixtyViewer
   image: 'images/example.jpg'
   count: 19
   perRow: 4
 />
 ```
+
 ### Options
 
 ```js
 {
-  // Source image url object with 
+  // Source image url object with
   imageArr: [{
     'image_url' : 'images/example-1.jpeg'
   }, {
@@ -28,7 +31,9 @@ npm i react-threesixty
   }
     ...
   ], // Also supports passing an array of images
+  isMobile : false, // if it is mobile. Default : false
   imageKey : 'image_url', // imageArr key for imageUrl. Default : image_url
+  zoomImageKey: 'zoom_image_url',
   // Width & Height
   width: 300,  // Image width. Default 300
   height: 300, // Image height. Default 300
@@ -55,9 +60,11 @@ npm i react-threesixty
 ```
 
 ### Array of images
+
 As an alternative to sprite image, ThreeSixty also supports using array of images:
+
 ```js
-<ThreeSixtyViewer 
+<ThreeSixtyViewer
   image: [{
     'imageUrl' : 'images/example-1.jpeg'
   }, {
