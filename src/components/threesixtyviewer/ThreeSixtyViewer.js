@@ -240,6 +240,7 @@ const ThreeSixtyViewer = (props) => {
                                                 }}>&minus;</button>
                                                 <button style={{padding : '0px', width: '1.5em', height : '1.5em', fontSize : '20px', fontWeight: '500', cursor : 'pointer'}} onClick={(event) => {
                                                     resetTransform(event)
+                                                    setTimeout(() => {resetTransform(event)})
                                                     handleZoomAction('zoom-close', scale)
                                                 }}>&times;</button>
                                             </div>
