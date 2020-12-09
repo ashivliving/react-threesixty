@@ -82,6 +82,9 @@ const ThreeSixtyViewer = (props) => {
             if(!isZoomIn) {
                 updateZoomImage(threeSixtyRef.current.index);
                 if(scale > 1) {
+                    if(handleZoomInOut) {
+                        handleZoomInOut(true);
+                    }
                     setIsZoomIn(true);
                     threeSixtyRef.current._stopScroll();
                 }
@@ -89,12 +92,18 @@ const ThreeSixtyViewer = (props) => {
         } else if(type === 'zoom-out') {
             if(scale < 1.5) {
                 if(isZoomIn) {
+                    if(handleZoomInOut) {
+                        handleZoomInOut(false);
+                    }
                     setIsZoomIn(false);
                     threeSixtyRef.current._allowScroll();
                 }
             }
         } else {
             if(isZoomIn) {
+                if(handleZoomInOut) {
+                    handleZoomInOut(false);
+                }
                 setIsZoomIn(false);
                 threeSixtyRef.current._allowScroll();
             }
@@ -162,6 +171,7 @@ const ThreeSixtyViewer = (props) => {
                     pan={{disabled: (!isZoomIn) ? true : false}} 
                     zoomIn={{step:50}} 
                     wheel={{step : 50}}
+                    doubleClick={{mode : 'reset'}}
                     defaultScale={1}
                     defaultPositionX={0}
                     defaultPositionY={0}
@@ -186,7 +196,9 @@ const ThreeSixtyViewer = (props) => {
                     pan={{disabled: (!isZoomIn) ? true : false}} 
                     zoomIn={{step:10}}
                     zoomOut={{step:10}}
-                    wheel={{step:50}}
+                    pinch={{disabled: true}}
+                    wheel={{step:50, disabled: true}}
+                    doubleClick={{disabled: true}}
                     defaultScale={1}
                     defaultPositionX={0}
                     defaultPositionY={0}
