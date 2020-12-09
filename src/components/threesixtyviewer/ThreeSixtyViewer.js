@@ -192,56 +192,63 @@ const ThreeSixtyViewer = (props) => {
             )
         } else {
             return (
-                <TransformWrapper
-                    pan={{disabled: (!isZoomIn) ? true : false}} 
-                    zoomIn={{step:10}}
-                    zoomOut={{step:10}}
-                    pinch={{disabled: true}}
-                    wheel={{step:50, disabled: true}}
-                    doubleClick={{disabled: true}}
-                    defaultScale={1}
-                    defaultPositionX={0}
-                    defaultPositionY={0}
-                    >
-                        {({ zoomIn, zoomOut, resetTransform, scale }) => (
-                            <>
-                                <TransformComponent>
-                                    <div ref={viewerRef} style={{
-                                        // position: 'absolute',
-                                        visibility : allImagesLoaded ? 'visible' : 'hidden',
-                                        width : '100%',
-                                        height : '100%',
-                                        cursor: `url(${dragState ? 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/drag_cursor.svg' : 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/cursor.svg'}), auto`,
-                                    }}>
-                                    </div>
-                                </TransformComponent>
-                                {
-                                    showZoomOption && (
-                                        <div style={{
-                                            position : 'absolute',
-                                            bottom : '1em',
-                                            right : '1em',
-                                            width : '2em',
-                                            zIndex : '2'
+                <div style={{
+                    display : allImagesLoaded ? 'block' : 'none',
+                    width: '100%',
+                    height: '100%',
+                    position: 'relative'
+                }}>
+                    <TransformWrapper
+                        pan={{disabled: (!isZoomIn) ? true : false}} 
+                        zoomIn={{step:10}}
+                        zoomOut={{step:10}}
+                        pinch={{disabled: true}}
+                        wheel={{step:50, disabled: true}}
+                        doubleClick={{disabled: true}}
+                        defaultScale={1}
+                        defaultPositionX={0}
+                        defaultPositionY={0}
+                        >
+                            {({ zoomIn, zoomOut, resetTransform, scale }) => (
+                                <>
+                                    <TransformComponent>
+                                        <div ref={viewerRef} style={{
+                                            // position: 'absolute',
+                                            visibility : allImagesLoaded ? 'visible' : 'hidden',
+                                            width : '100%',
+                                            height : '100%',
+                                            cursor: `url(${dragState ? 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/drag_cursor.svg' : 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/cursor.svg'}), auto`,
                                         }}>
-                                            <button style={{padding : '0px', width: '1.5em', height : '1.5em', fontSize : '20px', fontWeight: '500', cursor : 'pointer'}} onClick={(event) => {
-                                                zoomIn(event)
-                                                handleZoomAction('zoom-in', scale);
-                                            }}>&#43;</button>
-                                            <button style={{padding : '0px', width: '1.5em', height : '1.5em', fontSize : '20px', fontWeight: '500', cursor : 'pointer'}} onClick={(event) => {
-                                                zoomOut(event)
-                                                handleZoomAction('zoom-out', scale);
-                                            }}>&minus;</button>
-                                            <button style={{padding : '0px', width: '1.5em', height : '1.5em', fontSize : '20px', fontWeight: '500', cursor : 'pointer'}} onClick={(event) => {
-                                                resetTransform(event)
-                                                handleZoomAction('zoom-close', scale)
-                                            }}>&times;</button>
                                         </div>
-                                    )
-                                }
-                            </>
-                        )}
-                </TransformWrapper>
+                                    </TransformComponent>
+                                    {
+                                        showZoomOption && (
+                                            <div style={{
+                                                position : 'absolute',
+                                                bottom : '1em',
+                                                right : '1em',
+                                                width : '2em',
+                                                zIndex : '2'
+                                            }}>
+                                                <button style={{padding : '0px', width: '1.5em', height : '1.5em', fontSize : '20px', fontWeight: '500', cursor : 'pointer'}} onClick={(event) => {
+                                                    zoomIn(event)
+                                                    handleZoomAction('zoom-in', scale);
+                                                }}>&#43;</button>
+                                                <button style={{padding : '0px', width: '1.5em', height : '1.5em', fontSize : '20px', fontWeight: '500', cursor : 'pointer'}} onClick={(event) => {
+                                                    zoomOut(event)
+                                                    handleZoomAction('zoom-out', scale);
+                                                }}>&minus;</button>
+                                                <button style={{padding : '0px', width: '1.5em', height : '1.5em', fontSize : '20px', fontWeight: '500', cursor : 'pointer'}} onClick={(event) => {
+                                                    resetTransform(event)
+                                                    handleZoomAction('zoom-close', scale)
+                                                }}>&times;</button>
+                                            </div>
+                                        )
+                                    }
+                                </>
+                            )}
+                    </TransformWrapper>
+                </div>
             )
         }
     }
