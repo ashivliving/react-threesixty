@@ -81,13 +81,11 @@ const ThreeSixtyViewer = (props) => {
         if(type === 'zoom-in') {
             if(!isZoomIn) {
                 updateZoomImage(threeSixtyRef.current.index);
-                if(scale > 1) {
-                    if(handleZoomInOut) {
-                        handleZoomInOut(true);
-                    }
-                    setIsZoomIn(true);
-                    threeSixtyRef.current._stopScroll();
+                if(handleZoomInOut) {
+                    handleZoomInOut(true);
                 }
+                setIsZoomIn(true);
+                threeSixtyRef.current._stopScroll();
             }
         } else if(type === 'zoom-out') {
             if(scale < 1.5) {
@@ -236,6 +234,7 @@ const ThreeSixtyViewer = (props) => {
                                                 }}>&#43;</button>
                                                 <button style={{padding : '0px', width: '1.5em', height : '1.5em', fontSize : '20px', fontWeight: '500', cursor : 'pointer'}} onClick={(event) => {
                                                     zoomOut(event)
+                                                    setTimeout(() => {if(scale < 1.5) zoomOut(event)})
                                                     handleZoomAction('zoom-out', scale);
                                                 }}>&minus;</button>
                                                 <button style={{padding : '0px', width: '1.5em', height : '1.5em', fontSize : '20px', fontWeight: '500', cursor : 'pointer'}} onClick={(event) => {
