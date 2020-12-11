@@ -164,29 +164,36 @@ const ThreeSixtyViewer = (props) => {
     const renderThreesixty = () => {
         if(isMobile) {
             return (
-                <TransformWrapper
-                    doubleClick={{disabled : false}}
-                    pan={{disabled: (!isZoomIn) ? true : false}} 
-                    zoomIn={{step:50}} 
-                    wheel={{step : 50}}
-                    doubleClick={{mode : 'reset'}}
-                    defaultScale={1}
-                    defaultPositionX={0}
-                    defaultPositionY={0}
-                    onZoomChange={(e) => handleZoomChange(e)}
-                    >
-                        <TransformComponent>
-                            <div ref={viewerRef} style={{
-                                // position: 'absolute',
-                                width : '100%',
-                                height : '100%',
-                                cursor: `url(${dragState ? 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/drag_cursor.svg' : 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/cursor.svg'}), auto`,
-                                padding: '5em 0em',
-                                transform: 'translateY(5em)'
-                            }}>
-                            </div>
-                        </TransformComponent>
-                </TransformWrapper>
+                <div style={{
+                    display : allImagesLoaded ? 'block' : 'none',
+                    width: '100%',
+                    height: '100%',
+                    position: 'relative'
+                }}>
+                    <TransformWrapper
+                        doubleClick={{disabled : false}}
+                        pan={{disabled: (!isZoomIn) ? true : false}} 
+                        zoomIn={{step:50}} 
+                        wheel={{step : 50}}
+                        doubleClick={{mode : 'reset'}}
+                        defaultScale={1}
+                        defaultPositionX={0}
+                        defaultPositionY={0}
+                        onZoomChange={(e) => handleZoomChange(e)}
+                        >
+                            <TransformComponent>
+                                <div ref={viewerRef} style={{
+                                    // position: 'absolute',
+                                    width : '100%',
+                                    height : '100%',
+                                    cursor: `url(${dragState ? 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/drag_cursor.svg' : 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/cursor.svg'}), auto`,
+                                    padding: '5em 0em',
+                                    transform: 'translateY(5em)'
+                                }}>
+                                </div>
+                            </TransformComponent>
+                    </TransformWrapper>
+                </div>
             )
         } else {
             return (

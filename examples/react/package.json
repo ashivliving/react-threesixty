@@ -10,7 +10,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@ashivliving/threesixty-js": "2.0.11",
+    "@ashivliving/threesixty-js": "2.0.12",
     "pannellum-react": "^1.2.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
