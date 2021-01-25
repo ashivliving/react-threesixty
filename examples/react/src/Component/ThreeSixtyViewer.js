@@ -271,7 +271,7 @@ const ThreeSixtyViewer = (props) => {
                     height: '100%',
                     left: '0px',
                     top: '0px',
-                    backgroundPosition: 'center',
+                    backgroundPosition: `${isMobile ? 'center 5em' : 'center'}`,
                     backgroundSize: 'contain',
                     backgroundRepeat: 'no-repeat',
                     backgroundImage: `url(${imageArr[startIndex][imageKey]})`,
