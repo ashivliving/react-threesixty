@@ -1,6 +1,6 @@
 {
   "name": "react-threesixty",
-  "version": "1.0.30",
+  "version": "2.0.0",
   "description": "A Simple React 360 Library using threesixty.js",
   "keywords": [
     "React 360",
@@ -91,7 +91,7 @@
     "url": "https://github.com/ashivliving/react-threesixty"
   },
   "dependencies": {
-    "@ashivliving/threesixty-js": "^2.0.13",
+    "@ashivliving/threesixty-js": "^3.0.0",
     "react-zoom-pan-pinch": "^1.6.1"
   }
 }
