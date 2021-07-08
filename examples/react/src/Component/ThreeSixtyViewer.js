@@ -244,7 +244,7 @@ const ThreeSixtyViewer = (props) => {
                         <TransformComponent>
                             <div style={styles.transformComponent(allImagesLoaded, dragState, isMobile)}>
                                 <div ref={viewerRef} style={styles.viewer(allImagesLoaded, dragState)}></div>
-                                <ThreeSixtyHotspots hotspots={hotspots} clickHandler={hotspotClickHandler} />
+                                {hotspots.length > 0 && <ThreeSixtyHotspots hotspots={hotspots} clickHandler={hotspotClickHandler} />}
                             </div>
                         </TransformComponent>
                     </TransformWrapper>
@@ -269,7 +269,7 @@ const ThreeSixtyViewer = (props) => {
                                 <TransformComponent>
                                     <div style={styles.transformComponent(allImagesLoaded, dragState)}>
                                         <div ref={viewerRef} style={styles.viewer(allImagesLoaded, dragState)}></div>
-                                        <ThreeSixtyHotspots hotspots={hotspots} clickHandler={hotspotClickHandler} />
+                                        {hotspots.length > 0 && <ThreeSixtyHotspots hotspots={hotspots} clickHandler={hotspotClickHandler} />}
                                     </div>
                                 </TransformComponent>
                                 {
