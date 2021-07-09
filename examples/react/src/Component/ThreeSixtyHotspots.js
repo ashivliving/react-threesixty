@@ -26,7 +26,7 @@ const style = {
  */
 const ThreeSixtyHotspots = ({ hotspots, clickHandler }) => {
   return hotspots.map((hotspot, index) => (
-    <div key={index} style={style.wrapper(hotspot)} onClick={() => clickHandler(hotspot)}>{hotspot.ui ? hotspot.ui : <></>}</div>
+    <div key={index} style={style.wrapper(hotspot)} onClick={() => clickHandler && clickHandler(hotspot)}>{hotspot.ui ? hotspot.ui : <></>}</div>
   ))
 }
 
