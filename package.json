@@ -1,6 +1,6 @@
 {
   "name": "react-threesixty",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "A Simple React 360 Library using threesixty.js",
   "keywords": [
     "React 360",
@@ -21,7 +21,8 @@
     "test:watch": "react-scripts test --env=jsdom --coverage --collectCoverageFrom=src/components/**/*.js",
     "test:build": "run-s build",
     "lint:fix": "prettier-eslint '**/*.js' --write",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "publish": "npm run build && npm publish"
   },
   "author": "",
   "license": "MIT",
