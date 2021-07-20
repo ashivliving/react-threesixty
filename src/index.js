@@ -1,2 +1,3 @@
-import ThreeSixtyViewer from './components/threesixtyviewer/ThreeSixtyViewer'
-export { ThreeSixtyViewer }
+import ThreeSixtyViewer from './components/ThreeSixtyViewer'
+import ZoomPan from './components/ZoomPan';
+export { ThreeSixtyViewer, ZoomPan }

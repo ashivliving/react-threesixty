@@ -26,7 +26,7 @@ const updateHotspots = (hotspotsData, imgAngle, center = { x: 0.5, y: 0.5 }) => 
 
   // for hotspot to display in this range
   const getMaxAngle = (pos) => {
-    return 45;
+    return 30;
   }
 
   const getCoordinatesFromPos = (pos, r) => {
@@ -61,14 +61,24 @@ const updateHotspots = (hotspotsData, imgAngle, center = { x: 0.5, y: 0.5 }) => 
   }
 
   return hotspotsData.map((hotspot) => {
-    let minAngle, maxAngle, isDiplay;
+    let minAngle, maxAngle, isDiplay, dentAngle = hotspot.dentAngle;
     minAngle = getAngle(hotspot.position) - getMaxAngle(hotspot.position);
     maxAngle = getAngle(hotspot.position) + getMaxAngle(hotspot.position);
 
     if (imgAngle > 180 && hotspot.position === 'back') {
-      isDiplay = imgAngle > minAngle && imgAngle < maxAngle;
+      isDiplay = imgAngle >= minAngle && imgAngle <= maxAngle;
+    } else if (hotspot.position === 'upper') {
+      if (dentAngle <= 30 && dentAngle >= -30) {
+        isDiplay = curAngle <= 30 && curAngle >= -30;
+      } else if (dentAngle >= 60 && dentAngle <= 120) {
+        isDiplay = curAngle >= 60 && curAngle <= 120;
+      } else if (dentAngle <= -60 && dentAngle >= -120) {
+        isDiplay = curAngle <= -60 && curAngle >= -120;
+      } else {
+        isDiplay = curAngle >= 150 || curAngle <= -150;
+      }
     } else {
-      isDiplay = curAngle > minAngle && curAngle < maxAngle;
+      isDiplay = curAngle >= minAngle && curAngle <= maxAngle;
     }
 
     const cor = getCoordinatesFromPos(hotspot.position, hotspot.radius);
@@ -77,7 +87,7 @@ const updateHotspots = (hotspotsData, imgAngle, center = { x: 0.5, y: 0.5 }) => 
     return {
       ...hotspot,
       left: deviation.x,
-      display: isDiplay || hotspot.position === 'upper'
+      display: isDiplay
     };
   })
 }
