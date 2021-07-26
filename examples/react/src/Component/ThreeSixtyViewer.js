@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, memo, useState } from 'react';
 import ThreeSixty from '@ashivliving/threesixty-js';
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import updateHotspots from '../utils/updateHotspots';
 import ThreeSixtyHotspots from './ThreeSixtyHotspots';
+import ZoomPan from './ZoomPan';
 
 const styles = {
     threeSixtyWrap: (allImagesLoaded) => ({
@@ -11,9 +11,9 @@ const styles = {
         height: '100%',
         position: 'relative'
     }),
-    transformComponent: (allImagesLoaded, dragState, isMobile) => ({
+    transformComponent: (allImagesLoaded, dragState, isMobile, noMargin) => ({
         width: 'fit-content',
-        height: isMobile ? 'fit-content' : '100%',
+        height: isMobile && !noMargin ? 'fit-content' : '100%',
         visibility: allImagesLoaded ? 'visible' : 'hidden',
         position: 'relative',
         transform: 'translateX(-50%)',
@@ -22,11 +22,12 @@ const styles = {
         left: '50%',
         overflow: 'hidden',
         cursor: `url(${dragState ? 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/drag_cursor.svg' : 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/cursor.svg'}), auto`,
-        ...Object.assign({}, isMobile ? { margin: '5em 0' } : {})
+        ...Object.assign({}, isMobile && !noMargin ? { margin: 'auto' } : {})
     }),
     viewer: (allImagesLoaded, dragState) => ({
         width: '100%',
         height: '100%',
+        display: 'flex',
         cursor: `url(${dragState ? 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/drag_cursor.svg' : 'https://spinny-images.s3.ap-south-1.amazonaws.com/static-asset/icons/cursor.svg'}), auto`,
         visibility: allImagesLoaded ? 'visible' : 'hidden',
     }),
@@ -61,9 +62,10 @@ const styles = {
 }
 
 const ThreeSixtyViewer = (props) => {
-    const { isMobile = false, imageArr, imageKey = 'image_url', zoomImageKey = 'zoom_image_url', type = 'exterior',
+    const { isMobile = false, imageKey = 'image_url', zoomImageKey = 'zoom_image_url', type = 'exterior',
         autoPlay, startIndex = 0, updateIndex, handleImageChange, handleZoomInOut, showZoomOption = false,
-        containerName = 'reactThreesixtyContainer', hotspotClickHandler } = props;
+        containerName = 'reactThreesixtyContainer', hotspotClickHandler, renderHotspotUI, renderExtraElement,
+        noOuterMargin, imageArr, threeSixtyWrapStyle, zoomButtonStyle } = props;
     const viewerRef = useRef(null);
     const threeSixtyRef = useRef(null);
     const [dragState, setDragState] = useState(false);
@@ -91,7 +93,7 @@ const ThreeSixtyViewer = (props) => {
     }
 
     const imageChange = (e = null) => {
-        const imgAngle = imageArr[e ? e.detail.image_index : 0].angle;
+        const imgAngle = imageArr[e ? e.detail.image_index : startIndex].angle;
 
         props.hotspots?.length && sethotspots((old) => updateHotspots(old, imgAngle));
         if (e && e.detail && handleImageChange) {
@@ -229,72 +231,28 @@ const ThreeSixtyViewer = (props) => {
     const renderThreesixty = () => {
         if (isMobile) {
             return (
-                <div style={styles.threeSixtyWrap(allImagesLoaded)}>
-                    <TransformWrapper
-                        doubleClick={{ disabled: false }}
-                        pan={{ disabled: (!isZoomIn) ? true : false }}
-                        zoomIn={{ step: 50 }}
-                        wheel={{ step: 50 }}
-                        doubleClick={{ mode: 'reset' }}
-                        defaultScale={1}
-                        defaultPositionX={0}
-                        defaultPositionY={0}
-                        onZoomChange={(e) => handleZoomChange(e)}
-                    >
-                        <TransformComponent>
-                            <div style={styles.transformComponent(allImagesLoaded, dragState, isMobile)}>
-                                <div ref={viewerRef} style={styles.viewer(allImagesLoaded, dragState)}></div>
-                                {hotspots?.length > 0 && <ThreeSixtyHotspots hotspots={hotspots} clickHandler={hotspotClickHandler} />}
+                <div style={{...styles.threeSixtyWrap(allImagesLoaded), ...threeSixtyWrapStyle}}>
+                    <ZoomPan handleZoomChange={handleZoomChange} isZoomIn={isZoomIn} showZoomOption={showZoomOption} styles={styles} zoomButtonStyle={zoomButtonStyle}>
+                        <div style={styles.transformComponent(allImagesLoaded, dragState, isMobile, noOuterMargin)}>
+                            <div ref={viewerRef} style={styles.viewer(allImagesLoaded, dragState)}>
+                                {renderExtraElement && <div className="extra_threesixty">{renderExtraElement()}</div>}
                             </div>
-                        </TransformComponent>
-                    </TransformWrapper>
+                            {hotspots?.length > 0 && <ThreeSixtyHotspots hotspots={hotspots} renderUI={renderHotspotUI} clickHandler={hotspotClickHandler} />}
+                        </div>
+                    </ZoomPan>
                 </div>
             )
         } else {
             return (
-                <div style={styles.threeSixtyWrap(allImagesLoaded)}>
-                    <TransformWrapper
-                        pan={{ disabled: (!isZoomIn) ? true : false }}
-                        zoomIn={{ step: 10 }}
-                        zoomOut={{ step: 10 }}
-                        pinch={{ disabled: true }}
-                        wheel={{ step: 50, disabled: true }}
-                        doubleClick={{ disabled: true }}
-                        defaultScale={1}
-                        defaultPositionX={0}
-                        defaultPositionY={0}
-                    >
-                        {({ zoomIn, zoomOut, resetTransform, scale }) => (
-                            <>
-                                <TransformComponent>
-                                    <div style={styles.transformComponent(allImagesLoaded, dragState)}>
-                                        <div ref={viewerRef} style={styles.viewer(allImagesLoaded, dragState)}></div>
-                                        {hotspots?.length > 0 && <ThreeSixtyHotspots hotspots={hotspots} clickHandler={hotspotClickHandler} />}
-                                    </div>
-                                </TransformComponent>
-                                {
-                                    showZoomOption && (
-                                        <div style={styles.zoomOption}>
-                                            <button style={styles.zoomButton} onClick={(event) => {
-                                                zoomIn(event)
-                                                handleZoomAction('zoom-in', scale);
-                                            }}>&#43;</button>
-                                            <button style={styles.zoomButton} onClick={(event) => {
-                                                zoomOut(event)
-                                                setTimeout(() => { if (scale < 1.5) zoomOut(event) })
-                                                handleZoomAction('zoom-out', scale);
-                                            }}>&minus;</button>
-                                            <button style={styles.zoomButton} onClick={(event) => {
-                                                resetTransform(event)
-                                                setTimeout(() => { resetTransform(event) })
-                                                handleZoomAction('zoom-close', scale)
-                                            }}>&times;</button>
-                                        </div>
-                                    )
-                                }
-                            </>
-                        )}
-                    </TransformWrapper>
+                <div style={{...styles.threeSixtyWrap(allImagesLoaded), ...threeSixtyWrapStyle}}>
+                    <ZoomPan isDesktop={true} handleZoomAction={handleZoomAction} isZoomIn={isZoomIn} showZoomOption={showZoomOption} styles={styles} zoomButtonStyle={zoomButtonStyle}>
+                        <div style={styles.transformComponent(allImagesLoaded, dragState)}>
+                            <div ref={viewerRef} style={styles.viewer(allImagesLoaded, dragState)}>
+                                {renderExtraElement && <div className="extra_threesixty">{renderExtraElement()}</div>}
+                            </div>
+                            {hotspots?.length > 0 && <ThreeSixtyHotspots hotspots={hotspots} clickHandler={hotspotClickHandler} renderUI={renderHotspotUI} />}
+                        </div>
+                    </ZoomPan>
                 </div>
             )
         }
