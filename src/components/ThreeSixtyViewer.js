@@ -65,7 +65,7 @@ const ThreeSixtyViewer = (props) => {
     const { isMobile = false, imageKey = 'image_url', zoomImageKey = 'zoom_image_url', type = 'exterior',
         autoPlay, startIndex = 0, updateIndex, handleImageChange, handleZoomInOut, showZoomOption = false,
         containerName = 'reactThreesixtyContainer', hotspotClickHandler, renderHotspotUI, renderExtraElement,
-        noOuterMargin, imageArr } = props;
+        noOuterMargin, imageArr, threeSixtyWrapStyle, zoomButtonStyle } = props;
     const viewerRef = useRef(null);
     const threeSixtyRef = useRef(null);
     const [dragState, setDragState] = useState(false);
@@ -231,8 +231,8 @@ const ThreeSixtyViewer = (props) => {
     const renderThreesixty = () => {
         if (isMobile) {
             return (
-                <div style={styles.threeSixtyWrap(allImagesLoaded)}>
-                    <ZoomPan handleZoomChange={handleZoomChange} isZoomIn={isZoomIn} showZoomOption={showZoomOption} styles={styles}>
+                <div style={{...styles.threeSixtyWrap(allImagesLoaded), ...threeSixtyWrapStyle}}>
+                    <ZoomPan handleZoomChange={handleZoomChange} isZoomIn={isZoomIn} showZoomOption={showZoomOption} styles={styles} zoomButtonStyle={zoomButtonStyle}>
                         <div style={styles.transformComponent(allImagesLoaded, dragState, isMobile, noOuterMargin)}>
                             <div ref={viewerRef} style={styles.viewer(allImagesLoaded, dragState)}>
                                 {renderExtraElement && <div className="extra_threesixty">{renderExtraElement()}</div>}
@@ -244,11 +244,13 @@ const ThreeSixtyViewer = (props) => {
             )
         } else {
             return (
-                <div style={styles.threeSixtyWrap(allImagesLoaded)}>
-                    <ZoomPan isDesktop={true} handleZoomAction={handleZoomAction} isZoomIn={isZoomIn} showZoomOption={showZoomOption} styles={styles}>
+                <div style={{...styles.threeSixtyWrap(allImagesLoaded), ...threeSixtyWrapStyle}}>
+                    <ZoomPan isDesktop={true} handleZoomAction={handleZoomAction} isZoomIn={isZoomIn} showZoomOption={showZoomOption} styles={styles} zoomButtonStyle={zoomButtonStyle}>
                         <div style={styles.transformComponent(allImagesLoaded, dragState)}>
-                            <div ref={viewerRef} style={styles.viewer(allImagesLoaded, dragState)}></div>
-                            {hotspots?.length > 0 && <ThreeSixtyHotspots hotspots={hotspots} clickHandler={hotspotClickHandler} />}
+                            <div ref={viewerRef} style={styles.viewer(allImagesLoaded, dragState)}>
+                                {renderExtraElement && <div className="extra_threesixty">{renderExtraElement()}</div>}
+                            </div>
+                            {hotspots?.length > 0 && <ThreeSixtyHotspots hotspots={hotspots} clickHandler={hotspotClickHandler} renderUI={renderHotspotUI} />}
                         </div>
                     </ZoomPan>
                 </div>

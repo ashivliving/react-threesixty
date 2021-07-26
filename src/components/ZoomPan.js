@@ -2,7 +2,7 @@ import React from 'react';
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 
-const ZoomPan = ({ handleZoomChange, isDesktop, isZoomIn, children, handleZoomAction, showZoomOption, styles }) => {
+const ZoomPan = ({ handleZoomChange, isDesktop, isZoomIn, children, handleZoomAction, showZoomOption, styles, zoomButtonStyle }) => {
   if (isDesktop) {
     return (
       <TransformWrapper
@@ -24,16 +24,16 @@ const ZoomPan = ({ handleZoomChange, isDesktop, isZoomIn, children, handleZoomAc
             {
               showZoomOption && (
                 <div style={styles.zoomOption}>
-                  <button style={styles.zoomButton} onClick={(event) => {
+                  <button style={{...styles.zoomButton, ...zoomButtonStyle}} onClick={(event) => {
                     zoomIn(event)
                     handleZoomAction('zoom-in', scale);
                   }}>&#43;</button>
-                  <button style={styles.zoomButton} onClick={(event) => {
+                  <button style={{...styles.zoomButton, ...zoomButtonStyle}} onClick={(event) => {
                     zoomOut(event)
                     setTimeout(() => { if (scale < 1.5) zoomOut(event) })
                     handleZoomAction('zoom-out', scale);
                   }}>&minus;</button>
-                  <button style={styles.zoomButton} onClick={(event) => {
+                  <button style={{...styles.zoomButton, ...zoomButtonStyle}} onClick={(event) => {
                     resetTransform(event)
                     setTimeout(() => { resetTransform(event) })
                     handleZoomAction('zoom-close', scale)
