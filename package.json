@@ -92,7 +92,7 @@
     "url": "https://github.com/ashivliving/react-threesixty"
   },
   "dependencies": {
-    "@ashivliving/threesixty-js": "^3.0.3",
+    "@ashivliving/threesixty-js": "^3.0.5",
     "react-zoom-pan-pinch": "^1.6.1"
   }
 }
